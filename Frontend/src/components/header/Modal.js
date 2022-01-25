@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import emailjs from '@emailjs/browser';
 import { Modal, Button, Form, ModalFooter } from "react-bootstrap";
 
 const Mod = (props) => {
@@ -6,10 +7,108 @@ const Mod = (props) => {
     document.querySelector("#show1").style.display = "none";
     document.querySelector("#page").style.display = "block";
   };
-  const showDiv = () => {
-    document.querySelector("#otp").style.display = "block";
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_xngypus', 'template_qosnxfp', e.target, 'user_ti1lKayI0yiBHTNNbCFG3')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
   };
 
+  const showDiv = (e) => {
+    sendEmail(e)
+    document.querySelector("#otp").style.display = "block";
+    document.querySelector("#sign").style.display = "block";
+    document.querySelector("#cont").style.display = "none";
+  };
+  const showLogin = () => {
+    document.querySelector("#show1").style.display = "block";
+    document.querySelector("#page").style.display = "none";
+  };
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [userotp, setUserotp] = useState("")
+
+  useEffect(() => {
+    const otp = Math.floor(1000+ Math.random() * 9000);
+    setOtp(otp)
+  }, [])
+
+  const verify = () =>{
+    if(userotp == otp){
+      alert('login')
+    }
+    else{
+     alert('otp wrong') 
+    }
+  }
+
+  const sendUser = () => {
+    verify()
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    
+    var raw = JSON.stringify({
+     "email": email,
+      "password": password
+    });
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    fetch("http://localhost:3001/userSignin", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        if(result === "Successfully"){
+          alert("success")
+        }
+        else{
+          alert("no")
+        }
+      })
+    
+      .catch(error => console.log('error', error));
+    }
+
+    const sendUserLogin = () => {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      
+      var raw = JSON.stringify({
+       "email": email,
+        "password": password
+      });
+      
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      
+      fetch("http://localhost:3001/userLogin", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+          if(result === "successfully"){
+            alert("success")
+          }
+          else{
+            alert("no")
+          }
+        })
+      
+        .catch(error => console.log('error', error));
+      }
+  
+    
   return (
     <>
       <Modal
@@ -55,7 +154,7 @@ const Mod = (props) => {
               </ModalFooter>
             </div>
             <div>
-              <div closeButton></div>
+              <div></div>
               <Form
                 style={{
                   paddingLeft: "50px",
@@ -74,6 +173,7 @@ const Mod = (props) => {
                       borderRight: "none",
                       width: "35vh",
                     }}
+                    onChange={(e) => setemail(e.target.value)}
                   />
                 </Form.Group>
 
@@ -89,6 +189,7 @@ const Mod = (props) => {
                       borderRight: "none",
                       width: "35vh",
                     }}
+                    onChange={(e) => setpassword(e.target.value)}
                   />
                   <Form.Text
                     className="text-muted"
@@ -114,6 +215,7 @@ const Mod = (props) => {
                       borderRadius: "0px",
                       height: "6vh",
                     }}
+                    onClick={sendUserLogin}
                   >
                     Login
                   </Button>
@@ -138,7 +240,7 @@ const Mod = (props) => {
                 >
                   <Button
                     variant="light"
-                    type="submit"
+                   
                     style={{
                       width: "35vh",
                       border: "none",
@@ -217,7 +319,7 @@ const Mod = (props) => {
               </ModalFooter>
             </div>
             <div>
-              <div closeButton></div>
+              <div></div>
               <Form
                 style={{
                   paddingLeft: "50px",
@@ -226,7 +328,7 @@ const Mod = (props) => {
                   width: "35vh",
                 }}
               >
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="formBasicEmail" >
                   <Form.Control
                     type="email"
                     placeholder="Enter Email/Moblie No."
@@ -236,12 +338,15 @@ const Mod = (props) => {
                       borderRight: "none",
                       width: "35vh",
                     }}
+                    onChange={(e) => setemail(e.target.value)}
                   />
                 </Form.Group>
                 <div style={{ display:"none" }} id="otp">
                 <Form.Group className="mb-3" controlId="formBasicOtp" >
                   <Form.Control
                     type="otp"
+                    name = "otp"
+                    
                     placeholder="Enter OTP"
                     style={{
                       borderTop: "none",
@@ -249,6 +354,7 @@ const Mod = (props) => {
                       borderRight: "none",
                       width: "35vh",
                     }}
+                    onChange={(e) => setUserotp(e.target.value)}
                   />
                 </Form.Group>
 
@@ -264,12 +370,14 @@ const Mod = (props) => {
                       borderRight: "none",
                       width: "35vh",
                     }}
+                    onChange={(e) => setpassword(e.target.value)}
                   />
                    </Form.Group>
                    </div>
                   <Form.Text
                     className="text-muted"
                     style={{ marginTop: "25px" }}
+
                   >
                     By continuing, you agree to Flipkart's Terms of Use and
                     Privacy Policy.
@@ -283,17 +391,34 @@ const Mod = (props) => {
                   }}
                 >
                   <Button
-                    
+                    id="cont"
                     style={{
                       width: "35vh",
                       backgroundColor: "#fb641b",
                       border: "none",
                       borderRadius: "0px",
                       height: "6vh",
+                      display:"block"
                     }}
-                    onClick={()=>showDiv()}
+                    onClick= {showDiv}
                   >
                    Continue
+                  </Button>
+                  <Button
+                    type="submit"
+                    style={{
+                      width: "35vh",
+                      backgroundColor: "#fb641b",
+                      border: "none",
+                      borderRadius: "0px",
+                      height: "6vh",
+                      display:"none"
+                    }}
+                    onClick={sendUser}
+                    id="sign"
+    
+                  >
+                   Sign In
                   </Button>
                 </div>
                 <h6
@@ -316,7 +441,6 @@ const Mod = (props) => {
                 >
                   <Button
                     variant="light"
-                    type="submit"
                     style={{
                       width: "35vh",
                       border: "none",
@@ -325,6 +449,7 @@ const Mod = (props) => {
                       color: "#2874f0",
                       boxShadow:"2px 2px 2px 2px #888888" 
                     }}
+                    onClick={showLogin}
                   >
                    Existing User? Login
                   </Button>

@@ -92,9 +92,9 @@ app.post('/productList', (req, res) => {
 
 app.post('/userSignin', (req, res) => {
 
-    const { name, email, password, confirmPassword } = req.body;
-    db.query(`INSERT INTO userdata (name, email, password, confirmPassword) VALUES (?,?,?,?)`,
-        [name, email, password, confirmPassword],
+    const { email, password } = req.body;
+    db.query(`INSERT INTO userdata (email, password) VALUES (?,?)`,
+        [email, password],
         (err, result) => {
             if (err) {
                 res.status(400).json('Already Register');
