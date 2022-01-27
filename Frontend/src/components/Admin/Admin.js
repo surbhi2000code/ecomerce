@@ -6,6 +6,8 @@ function admin() {
         <div>
            <Link to="/category">Category Page</Link>
            <br/>
+           <Link to="/deals">Deals Page</Link>
+           <br/>
            <Link to="/products">Products Page</Link>
         </div>
     )

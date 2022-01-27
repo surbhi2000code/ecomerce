@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Carousel, CardGroup, Card } from "react-bootstrap";
+import View from './View'
 
 function Cards() {
   const [category, setCate] = useState([])
@@ -148,7 +149,9 @@ function Cards() {
           </Card>
         </div>
       </CardGroup>
-
+      <div style={{marginTop:"5vh", contentAlign:"center"}}>
+      <View/></div>
+<div style={{marginTop:"30vh",display:"grid ", justifyContent:"center"}}>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <h6 style={{ color: "gray" }}>Top Stories:</h6>
         <h6 style={{ color: "#172337" }}>Brand Directory</h6>
@@ -168,6 +171,7 @@ function Cards() {
           Axis Bank Credit CardFlipkart Pay LaterJewelleryWatchesGold
           CoinMangalsutraSunglassesMi SunglassesBackpacksRay Ban Sunglasses
         </p>
+      </div>
       </div>
     </>
   );
