@@ -106,10 +106,11 @@ const Mod = (props) => {
     fetch("http://localhost:3001/userLogin", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        if (result === "successfully") {
+        if (result.message === "Successfully") {
           alert("success");
+          localStorage.setItem('email', email)
         } else {
-          alert("no");
+          alert(result);
         }
       })
 

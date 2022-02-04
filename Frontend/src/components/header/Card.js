@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Carousel, CardGroup, Card } from "react-bootstrap";
+import Header from "./Header";
 import View from './View'
 
 function Cards() {
@@ -30,7 +31,7 @@ function Cards() {
   return (
     
     <>
-    
+    <Header/>
                   
       <div
         style={{

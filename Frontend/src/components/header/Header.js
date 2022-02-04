@@ -12,8 +12,9 @@ import { IoBriefcase } from "react-icons/io5";
 import { BiMessageAltError } from "react-icons/bi";
 import { AiOutlineRise } from "react-icons/ai";
 import { Dropdown } from "react-bootstrap";
-import Cards from './Card'
+import {Link } from "react-router-dom"
 import Mod from './Modal'
+import { display } from "@mui/system";
 
 
 export default function Header() {
@@ -34,9 +35,16 @@ export default function Header() {
   };
   const showPage = () => {
     setModalShow(true)
-    
-   // document.querySelector("#page").style.display = "block";
+    document.querySelector("#logout").style.display = "block";
+    document.querySelector("#login").style.display = "none";
+
   };
+
+  const logout = () => {
+    localStorage.removeItem("email")
+    document.querySelector("#login").style.display = "block";
+
+  }
 
   return (
     <>
@@ -113,7 +121,8 @@ export default function Header() {
               />
             </div>
 
-             
+             {
+               !localStorage.getItem('email') ?
             <Dropdown>
               <Dropdown.Toggle
                 id="dropdown-basic"
@@ -125,8 +134,10 @@ export default function Header() {
                 }}
                 onMouseOver={showList} onMouseOut={hideList} 
               >
-              <h6 style={{fontSize: "18px",color:"#2874f0"}} onClick={()=>showPage()}>Login</h6>
+              <h6 style={{fontSize: "18px",color:"#2874f0", display:"block"}} onClick={()=>showPage()} id="login">Login</h6>
+
               </Dropdown.Toggle>
+
 
               <Dropdown.Menu id="list"  onMouseOver={showList} onMouseOut={hideList} >
                 <Dropdown.Item href="#/action-3" style={{fontWeight:"bold"}}>
@@ -179,6 +190,10 @@ export default function Header() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            :
+            <h6 style={{fontSize: "18px",color:"white", marginLeft:'20px',cursor:'pointer'}} onClick={()=>logout()}>Logout </h6>
+
+             }
       
        
             <Dropdown>
@@ -236,16 +251,17 @@ export default function Header() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            <Link to="/cart" style={{color:"white", border:"none"}}>
             <h6 style={{ fontSize: "20px" }}>
               <Badge badgeContent={4} color="warning" style={{marginRight:"10px"}}>
                 <MdShoppingCart />
               </Badge>
               Cart
-            </h6>
+            </h6></Link>
           </Toolbar>
         </AppBar>
       </Box>
-      <Cards/>
+     
       
 
       <Mod

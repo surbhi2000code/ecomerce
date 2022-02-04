@@ -29,8 +29,10 @@ export const Products = () => {
 
     return (
         <>
-                <Form>
-  
+               <div style={{  paddingBottom:"6rem",paddingTop:"6rem",backgroundColor:"#89a6eb",}}>
+    <div style={{ display:"flex", justifyContent:"center", border:"1px solid white", width:"110vh", height:"80vh", paddingTop:"10vh", marginLeft:"50vh", backgroundColor:"white", borderShadow:"10px 10px 8px 10px black" , borderRadius:"60%"}}>
+      <Form style={{ width:"70vh",justifyContent:"center"}}>
+        <h3 style={{ textAlign:"center", paddingBottom:"7vh"}}>Add Deals</h3>
   <Form.Group className="mb-3" controlId="formBasicEmail">
     <Form.Label>Product Name</Form.Label>
     <Form.Control type="text" placeholder="Enter category" onChange={(e) => setname(e.target.value)} />
@@ -47,10 +49,11 @@ export const Products = () => {
     <Form.Label>Details</Form.Label>
     <Form.Control type="text" placeholder="Enter category"  onChange={(e) => setdetail(e.target.value)}/>
   </Form.Group>
-  <Button variant="primary" type="submit" onClick={sendData}>
+  <Button class="btn btn-dark" type="submit" onClick={sendData}>
     Submit
   </Button>
 </Form>
+</div></div>
         </>
     )
 }

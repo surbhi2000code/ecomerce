@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { Carousel,Card, CardGroup } from 'react-bootstrap';
+import { Carousel,Card, CardGroup, Button } from 'react-bootstrap';
+import {Link, useNavigate } from "react-router-dom"
 
 function View() {
     const [products, setProdt] = useState([])
+    let navigate = useNavigate();
   
     useEffect(() => {
       showProduct();
@@ -16,6 +18,35 @@ function View() {
       console.log('dgh');
       setProdt(products)
     }
+
+    const checkoutProduct = (products) => {
+      console.log(products);
+      var myHeaders = new Headers()
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({ "userId": localStorage.getItem("email"), "productId": products.ID , "productName":products.prodtName, "productImage": products.prodtImage1, "productPrice": products.prodtPrice , "quantity":1 ,"price": products.prodtPrice});
+
+      var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+      };
+
+      fetch("http://localhost:3001/cartProduct", requestOptions)
+          .then(response => response.json())
+          .then(result => {
+              if (result === 'Successfully') {
+                  
+                  alert('Successfully Add ')
+                  
+              } else {
+                  alert('Login Required')
+              }
+          })
+          .catch(error => console.log('error', error));
+  }
+
   return (
   <div style={{ display:"flex", flexDirection:"row", justifyContent:"center"}}>
 
@@ -23,7 +54,7 @@ function View() {
     products.map(products =>(
         <>
         <CardGroup>
-  <Card style={{width:"250px", height:"450px", marginLeft:"2vh" , display: "block"}}>
+  <Card style={{width:"250px", height:"470px", marginLeft:"2vh" , display: "block"}}>
   <Carousel variant="dark" >
   <Carousel.Item style={{width:"250px", height:"300px", }}>
     <img
@@ -61,6 +92,11 @@ function View() {
       {products.prodtDetail}...
       </Card.Text>
     </Card.Body>
+    <div style={{display:"flex", justifyContent:"center"}}>
+   <Link to="/cart"> <Button style={{marginRight:"2vh"}} onClick={() => checkoutProduct(products)}>Add to Cart</Button></Link>
+   <Link to="/details"> <Button  >View</Button></Link>
+    </div>
+   
   </Card>
 </CardGroup> 
 
