@@ -26,7 +26,7 @@ const Cart = () => {
     fetch("http://localhost:3001/showCart", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        setAllCart(result.data);
+        setAllCart(result.data);    
         setDataLen(result.data.length);
       })
       .catch((error) => console.log("error", error));
@@ -254,9 +254,7 @@ const Cart = () => {
                     </div>
                   </div>
                   {
-                  (allCart[index] === -1)?
  <h5> Total Price: {totalPrice += parseInt(data.price)}</h5> 
-                  :<p>jyjyj</p>
                   }
                 
                 </>
