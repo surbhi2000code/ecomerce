@@ -3,7 +3,7 @@ import { Table, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Header from "./Header";
 
-const Cart = () => {
+const Cart = ({detail}) => {
   const [allCart, setAllCart] = useState([]);
   const [dataLen, setDataLen] = useState("");
   const [prices, setPrices] = useState("");
@@ -215,7 +215,7 @@ const Cart = () => {
                         />
                       </>
                       <div style={{ flexDirection: "col" }}>
-                        <p style={{ fontSize: "28px" }}>{data.productName}</p>
+                      <Link to="/details" style={{color:"black  "}}> <p style={{ fontSize: "28px" }} onClick={()=>detail(data.ID)}>{data.productName}</p></Link> 
                         <p
                           style={{
                             fontSize: "20px",
@@ -263,7 +263,7 @@ const Cart = () => {
           ) : (
             <p>No product Added</p>
           )}
-          <Link to="/placed">
+          <Link to="/payment">
             <Button variant="warning" onClick={() => confirmOrder()}>
               Confirm Order
             </Button>

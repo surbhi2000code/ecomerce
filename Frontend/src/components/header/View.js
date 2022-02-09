@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Carousel,Card, CardGroup, Button } from 'react-bootstrap';
 import {Link, useNavigate } from "react-router-dom"
 
-function View() {
+function View({detail}) {
     const [products, setProdt] = useState([])
     let navigate = useNavigate();
   
@@ -83,7 +83,7 @@ function View() {
       src={products.prodtImage4}
       alt="First slide"
     />
-  </Carousel.Item>
+  </Carousel.Item>  
 </Carousel>
     <Card.Body style={{textAlign:"center"}}>
       <Card.Title>{products.prodtName}</Card.Title>
@@ -94,7 +94,7 @@ function View() {
     </Card.Body>
     <div style={{display:"flex", justifyContent:"center"}}>
    <Link to="/cart"> <Button style={{marginRight:"2vh"}} onClick={() => checkoutProduct(products)}>Add to Cart</Button></Link>
-   <Link to="/details"> <Button  >View</Button></Link>
+   <Link to="/details"> <Button  onClick={()=>detail(products.ID)}>View</Button></Link>
     </div>
    
   </Card>

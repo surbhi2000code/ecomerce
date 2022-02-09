@@ -3,7 +3,9 @@ import { Carousel, CardGroup, Card } from "react-bootstrap";
 import Header from "./Header";
 import View from './View'
 
-function Cards() {
+function Cards({detail}) {
+
+
   const [category, setCate] = useState([])
   const [product, setProd] = useState([])
   
@@ -151,7 +153,7 @@ function Cards() {
         </div>
       </CardGroup>
       <div style={{marginTop:"5vh", contentAlign:"center"}}>
-      <View/></div>
+      <View detail={detail}/></div>
 <div style={{marginTop:"30vh",display:"grid ", justifyContent:"center"}}>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <h6 style={{ color: "gray" }}>Top Stories:</h6>
