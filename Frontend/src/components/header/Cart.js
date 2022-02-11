@@ -142,11 +142,13 @@ const Cart = ({detail}) => {
       .catch((error) => console.log("error", error));
   };
 
-  var totalPrice= 0;
+  var totalPrice= 0;  
 
 
-  const confirmOrder = (data) => {
+  const confirmOrder = (pr) => {
+  console.log(pr);
     allCart.forEach((data) => {
+      console.log(data);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -154,7 +156,7 @@ const Cart = ({detail}) => {
         userId: localStorage.getItem("email"),
         prodtName: data.productName,
         prodtImage: data.productImage,
-        totalPrice: data.price,
+        totalPrice: data.productPrice,
       });
 
       var requestOptions = {
@@ -253,21 +255,21 @@ const Cart = ({detail}) => {
                      
                     </div>
                   </div>
-                  {
+                  
  <h5> Total Price: {totalPrice += parseInt(data.price)}</h5> 
-                  }
-                
+                  
+                <Link to="/payment">
+            <Button variant="warning" onClick={() => confirmOrder(totalPrice)}>
+              Confirm Order
+            </Button>
+          </Link>
                 </>
               );
             })
           ) : (
             <p>No product Added</p>
           )}
-          <Link to="/payment">
-            <Button variant="warning" onClick={() => confirmOrder()}>
-              Confirm Order
-            </Button>
-          </Link>
+          
           <Link to="/">
             <Button variant="primary" style={{ marginLeft: "10px" }}>
               Add More Product
