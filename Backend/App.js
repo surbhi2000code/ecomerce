@@ -35,6 +35,22 @@ app.post('/product', (req, res) => {
     )
 })
 
+app.post('/products', (req, res) => {
+
+    const { prodtName, prodtPrice, prodtImage1,prodtImage2,prodtImage3,prodtImage4, prodtDetail } = req.body;
+    db.query(`INSERT INTO shoproduct (prodtName, prodtPrice, prodtImage1,prodtImage2,prodtImage3,prodtImage4, prodtDetail) VALUES (?,?,?,?,?,?,?)`,
+        [prodtName, prodtPrice, prodtImage1,prodtImage2,prodtImage3,prodtImage4, prodtDetail],
+        (err, result) => {
+            if (err) {
+                res.status(400).json(err);
+            }
+            else {
+                res.status(200).json('Successfully');
+            }
+        }
+    )
+})
+
 app.post('/category', (req, res) => {
 
     const { cateName, cateImage} = req.body;
@@ -64,6 +80,14 @@ app.get('/showCategory', (req, res) => {
 app.get('/allProduct', (req, res) => {
     db.query(
         `SELECT * FROM product`,
+        (err, result) => {
+            return res.json(result);
+        }
+    )
+})
+app.get('/showProducts', (req, res) => {
+    db.query(
+        `SELECT * FROM shoproduct`,
         (err, result) => {
             return res.json(result);
         }
@@ -126,12 +150,12 @@ app.post('/userLogin', (req, res) => {
 
 app.post('/cartProduct', (req, res) => {
 
-    const { userId, productId, productName, productImage, productPrice } = req.body;
-    db.query(`INSERT INTO usercart (userId, productId, productName, productImage, productPrice) VALUES (?,?,?,?,?)`,
-        [userId, productId, productName, productImage, productPrice],
+    const { userId, productId, productName,quantity, productImage, productPrice,price } = req.body;
+    db.query(`INSERT INTO usercart (userId, productId, productName,quantity, productImage, productPrice,price) VALUES (?,?,?,?,?,?,?)`,
+        [userId, productId, productName,quantity, productImage, productPrice,price],
         (err, result) => {
             if (err) {
-                res.status(400).json(err);
+                res.status(400).json({errs:err});
             }
             else {
                 res.status(200).json('Successfully');
@@ -139,6 +163,16 @@ app.post('/cartProduct', (req, res) => {
         }
     )
 })
+
+app.post('/productDetail', (req, res) => {
+    const { productId } = req.body;
+    db.query(
+        `SELECT * FROM shoproduct WHERE id= '${productId}'`,
+        (err, result) => {
+            return res.send(result);
+        }
+    )
+}) 
 
 app.post('/showCart', (req, res) => {
     const { userId } = req.body;
@@ -158,11 +192,53 @@ app.post('/showCart', (req, res) => {
     )
 })
 
+app.post('/addquantity', (req, res) => {
+    const { id } = req.body;
+    
+    db.query(
+        `SELECT * FROM usercart WHERE ID='${id}'`,
+        (err, result) => {
+            res.status(200).json(result);
+            
+        }
+    )
+})
+
+app.post('/removeCart', (req, res) => {
+    const { ID } = req.body;
+    console.log(ID);
+    
+    db.query(
+        `DELETE FROM usercart WHERE ID='${ID}'`,
+        (err, result) => {
+            
+                res.status(200).json(result);
+            
+            
+        }
+    )
+})
+
+app.post('/updateCart', (req, res) => {
+    const { ID, quantity, price } = req.body;
+    console.log(ID);
+    
+    db.query(
+        `UPDATE usercart SET quantity= '${quantity}', price='${price}' WHERE ID='${ID}'`,
+        (err, result) => {
+            
+                res.status(400).json(result);
+   
+            
+        }
+    )
+})
+
 app.post('/userOrder', (req, res) => {
 
-    const { userId, quantity, productName, userName, totalPrice, productImage } = req.body;
-    db.query(`INSERT INTO userorder (userId, quantity, productName, userName, totalPrice, productImage) VALUES (?,?,?,?,?,?)`,
-        [userId, quantity, productName, userName, totalPrice, productImage],
+    const { userId,  prodtName,totalPrice, prodtImage } = req.body;
+    db.query(`INSERT INTO userorder (userId,  prodtName,totalPrice, prodtImage) VALUES (?,?,?,?)`,
+        [userId,  prodtName,totalPrice, prodtImage],
         (err, result) => {
             if (err) {
                 res.status(400).json(err);
@@ -214,7 +290,7 @@ app.post('/adminLogin', (req, res) => {
     const { email, password } = req.body;
 
     if(email === '' || password === ''){
-        res.send('empty felid ')
+        res.send('empty feild ')
     } else if(email === 'admin123@gmail.com' && password === 'admin123'){
         res.send('Successfully')
     } else (
